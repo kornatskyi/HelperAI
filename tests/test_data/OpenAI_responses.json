@@ -1,0 +1,8 @@
+{
+  "responses" :[
+    {
+      "role": "assistant",
+      "content": "To print the sizes of all files in the terminal using the `du` command, you can use the following command:\n\n```\ndu -ah\n```\n\nThis command displays the sizes of all the files and directories in the current directory and its subdirectories, in human-readable format (e.g., 1K, 1M, 1G).\n\nIf you want to sort the output by file size, you can use the following command:\n\n```\ndu -ah | sort -rh\n```\n\nThis command sorts the output in descending order of file size, with the largest files listed first."
+    }
+  ]
+}

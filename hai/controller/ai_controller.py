@@ -1,6 +1,7 @@
 from hai.model.api_manager import ApiManager
 from hai.view.cli_view import CliView
 
+
 class AiController:
     def __init__(self, api_manager: ApiManager, cli_view: CliView):
         self.api_manager = api_manager
@@ -13,3 +14,4 @@ class AiController:
                 break
             response = self.api_manager.get_ai_response(user_input)
             self.cli_view.show_output(response['content'])  # Assuming the response is already formatted
+            break
