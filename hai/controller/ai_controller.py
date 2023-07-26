@@ -12,4 +12,4 @@ class AiController:
             if user_input.lower() == "quit":
                 break
             response = self.api_manager.get_ai_response(user_input)
-            self.cli_view.show_output(response)  # Assuming the response is already formatted
+            self.cli_view.show_output(response['content'])  # Assuming the response is already formatted
