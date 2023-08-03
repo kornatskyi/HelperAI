@@ -16,15 +16,15 @@ load_dotenv(dotenv_path=dotenv_path)
 
 
 def main():
-    api_model_name = "gpt-3.5-turbo-0613"
-    api_key = os.getenv("OPENAI_API_KEY")
+    api_manager
+    match os.getenv("AI_SOURCE"):
+        case "openai":
+            api_model_name = os.getenv("MODEL_NAME")
+            api_key = os.getenv("OPENAI_API_KEY")
+            api_manager = ApiManager(api_model_name, api_key)
+        case _:
+            api_manager = MockApiManager.MockApiManager()
     
-    # use mock api manager in development mode
-    api_manager = (
-        MockApiManager.MockApiManager()
-        if os.getenv("MODE") == "development"
-        else ApiManager(api_model_name, api_key)
-    )
     cli_view = CliView()
 
     ai_controller = AiController(api_manager, cli_view)

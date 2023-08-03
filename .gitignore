@@ -2,3 +2,5 @@
 **/__pycache__
 .env
 ROADMAP.md
+dist/
+hai.egg-info
