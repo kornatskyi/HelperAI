@@ -16,7 +16,7 @@ load_dotenv(dotenv_path=dotenv_path)
 
 
 def main():
-    api_manager
+    api_manager = None
     match os.getenv("AI_SOURCE"):
         case "openai":
             api_model_name = os.getenv("MODEL_NAME")
