@@ -1,3 +1,4 @@
+from typing import Generator
 import requests
 import openai
 
@@ -7,7 +8,7 @@ class ApiManager:
         self.api_endpoint = model_name
         openai.api_key = api_key
 
-    def get_ai_response(self, message) -> str:
+    def get_ai_response(self, message) -> Generator:
         conversation = [
             {
                 "role": "system",
@@ -21,8 +22,14 @@ class ApiManager:
             },
             {"role": "user", "content": message},
         ]
-        completion = openai.ChatCompletion.create(
-            model=self.api_endpoint, messages=conversation
+        response = openai.ChatCompletion.create(
+            model=self.api_endpoint,
+            messages=conversation,
+            stream=True,
         )
-        response_message = completion.choices[0].message
-        return response_message
+
+        for chunk in response:
+            try:
+                yield chunk["choices"][0]["delta"]["content"]
+            except:
+                return
