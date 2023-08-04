@@ -2,13 +2,15 @@ from typing import Generator
 import requests
 import openai
 
+from tests.helper_classes import dummyai
+
 
 class ApiManager:
     def __init__(self, model_name, api_key):
-        self.api_endpoint = model_name
+        self.model_name = model_name
         openai.api_key = api_key
 
-    def get_ai_response(self, message) -> Generator:
+    def get_ai_response(self, message) -> Generator[str, None, None]:
         conversation = [
             {
                 "role": "system",
@@ -22,14 +24,25 @@ class ApiManager:
             },
             {"role": "user", "content": message},
         ]
-        response = openai.ChatCompletion.create(
-            model=self.api_endpoint,
-            messages=conversation,
-            stream=True,
-        )
-
-        for chunk in response:
-            try:
-                yield chunk["choices"][0]["delta"]["content"]
-            except:
-                return
+        response = None
+        if self.model_name[:3] == "gpt":
+            response = openai.ChatCompletion.create(
+                model=self.model_name,
+                messages=conversation,
+                stream=True,
+            )
+            for chunk in response:
+                try:
+                    yield chunk["choices"][0]["delta"]["content"]
+                except:
+                    return
+        else:
+            response = dummyai.DummyAI.create(
+                conversation=conversation, stream=True
+            )
+            for chunk in response:
+                try:
+                    yield chunk
+                except:
+                    return
+        
