@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 # internal
 from hai.model.api_manager import ApiManager
 from hai.view.cli_view import CliView
-from hai.controller.ai_controller import AiController
+from hai.controller.controller import Controller
 
 dotenv_path = Path(".env")
 load_dotenv(dotenv_path=dotenv_path)
@@ -21,8 +21,8 @@ def main():
 
     cli_view = CliView()
 
-    ai_controller = AiController(api_manager, cli_view)
-    ai_controller.start()
+    ai_controller = Controller(api_manager, cli_view)
+    ai_controller.ask_question()
 
 
 if __name__ == "__main__":

@@ -13,7 +13,7 @@ class DummyAI:
         if stream:
             iterator = 0
             while iterator < len(response):
-                time.sleep(0.1)
+                time.sleep(0.01)
                 rand = random.randint(0, 4)
                 yield response[iterator : iterator + rand]
                 iterator += rand

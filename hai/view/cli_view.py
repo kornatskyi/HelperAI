@@ -29,17 +29,19 @@ class CliView:
         CliView.console.clear()
 
     @staticmethod
-    def update_from_generator(textGenerator: Generator):
+    def update_from_generator(textGenerator: Generator) -> (str, [str]):
         markdown = Markdown("")
         text = ""
+        strings_to_copy: [str] = []
         with Live(
             markdown, refresh_per_second=4
         ) as live:  # update 4 times a second to feel fluid
             for chunk in textGenerator:
                 text = text + chunk
                 markdown = Markdown(text)
-                modify_md(markdown)
+                strings_to_copy = modify_md(markdown)
                 live.update(markdown)
+        return markdown.markup, strings_to_copy
 
 
 def modify_md(markdown: Markdown):
@@ -56,5 +58,7 @@ def modify_md(markdown: Markdown):
     for token in markdown.parsed:
         if token.tag == "code":
             strings_to_copy.append(token.content)
-            token.content = token.content + f"(press {len(strings_to_copy)} to copy)"
+            token.content = (
+                token.content + f"(press {len(strings_to_copy)} to copy)"
+            )
     return strings_to_copy
