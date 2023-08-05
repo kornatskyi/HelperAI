@@ -3,4 +3,6 @@
 .env
 ROADMAP.md
 dist/
-hai.egg-info
+hai.egg-info/
+build/
+*egg-info
