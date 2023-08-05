@@ -2,7 +2,8 @@ from typing import Generator
 import requests
 import openai
 
-from tests.helper_classes import dummyai
+from hai.mock import dummyai
+
 
 
 class ApiManager:

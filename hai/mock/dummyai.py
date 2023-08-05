@@ -5,7 +5,7 @@ import time
 
 class DummyAI:
     DELAY_OF_PRINTING_A_TOKEN = 0.001
-    TEST_DATA_LOCATION = "./tests/test_data/OpenAI_responses.json"
+    TEST_DATA_LOCATION = "./hai/mock/mock_data/OpenAI_responses.json"
 
     @staticmethod
     def create(conversation, stream=False):

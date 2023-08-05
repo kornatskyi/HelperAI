@@ -1,5 +1,4 @@
 import pytest
-import os
 import pyperclip as pc
 
 from hai.controller.controller import Controller
