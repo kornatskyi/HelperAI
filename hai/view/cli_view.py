@@ -29,7 +29,9 @@ class CliView:
         CliView.console.clear()
 
     @staticmethod
-    def update_from_generator(textGenerator: Generator) -> (str, [str]):
+    def update_from_generator(
+        textGenerator: Generator,
+    ) -> tuple[str, list[str]]:
         markdown = Markdown("")
         text = ""
         strings_to_copy: [str] = []

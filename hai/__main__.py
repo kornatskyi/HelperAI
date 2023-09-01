@@ -22,8 +22,7 @@ def main():
     cli_view = CliView()
 
     ai_controller = Controller(api_manager, cli_view)
-    ai_controller.ask_question()
-
+    ai_controller.start_conversation()
 
 if __name__ == "__main__":
     main()
