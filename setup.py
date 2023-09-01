@@ -5,12 +5,12 @@ with open("requirements.txt") as f:
 
 setup(
     name="hai",
-    version="0.1",
+    version="0.2",
     packages=find_packages(),
     install_requires=required,
     entry_points={
         "console_scripts": [
-            "hai = hai.__main__:main",
+            'hai=__main__:cli',
         ]
     },
 )
