@@ -8,7 +8,6 @@ charset-normalizer==3.2.0
 click==8.1.6
 exceptiongroup==1.1.2
 frozenlist==1.4.0
--e git+ssh://git@github.com/kornatskyi/HelperAI.git@87a1e33597c9aa24293a59d89237a396ef8fafd2#egg=hai
 idna==3.4
 iniconfig==2.0.0
 markdown-it-py==3.0.0
