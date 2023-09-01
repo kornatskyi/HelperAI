@@ -5,7 +5,6 @@ import openai
 from hai.mock import dummyai
 
 
-
 class ApiManager:
     def __init__(self, model_name, api_key):
         self.model_name = model_name
@@ -49,4 +48,3 @@ class ApiManager:
                     yield chunk
                 except:
                     return
-        
