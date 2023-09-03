@@ -1,4 +1,5 @@
 from typing import Generator
+import click
 from rich.markdown import Markdown
 from rich.console import Console
 from rich.live import Live
@@ -9,7 +10,15 @@ class CliView:
 
     @staticmethod
     def get_user_input():
-        return input("> ")
+        first_line = click.prompt("User >", default="", show_default=False)
+        lines = [first_line]
+        while True:
+            line = input()
+            if line:
+                lines.append(line)
+            else:
+                break
+        return "\n".join(lines)
 
     @staticmethod
     def show_output(message) -> list[str]:
@@ -33,7 +42,7 @@ class CliView:
         textGenerator: Generator,
     ) -> tuple[str, list[str]]:
         markdown = Markdown("")
-        text = ""
+        text = "Assistant >: "
         strings_to_copy: [str] = []
         with Live(
             markdown, refresh_per_second=4
