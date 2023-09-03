@@ -1,5 +1,4 @@
 from typing import Generator
-import requests
 import openai
 
 from hai.mock import dummyai
@@ -28,7 +27,16 @@ class ApiManager:
             {"role": "user", "content": message},
         ]
         response = None
-        if self.model_name[:3] == "gpt":
+        if self.model_name == "mock":
+            response = dummyai.DummyAI.create(
+                conversation=conversation, stream=True
+            )
+            for chunk in response:
+                try:
+                    yield chunk
+                except:
+                    return
+        else:
             response = openai.ChatCompletion.create(
                 model=self.model_name,
                 messages=conversation,
@@ -37,14 +45,5 @@ class ApiManager:
             for chunk in response:
                 try:
                     yield chunk["choices"][0]["delta"]["content"]
-                except:
-                    return
-        else:
-            response = dummyai.DummyAI.create(
-                conversation=conversation, stream=True
-            )
-            for chunk in response:
-                try:
-                    yield chunk
                 except:
                     return

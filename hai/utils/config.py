@@ -24,3 +24,9 @@ class Config:
     def set(self, key: str, value: Any):
         self.config_data[key] = value
         self.save_config()
+
+    def available_models(self) -> list[str]:
+        """
+        Get available AI models
+        """
+        return self.get("available_models", default=[])

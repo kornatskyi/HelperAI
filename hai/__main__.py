@@ -16,8 +16,8 @@ from hai.utils.config import Config
 config = Config(file_path="hai_config.json")
 
 # Use Config to initialize API Manager and Controller
-api_model_name = config.get("MODEL_NAME", "default_model")
-api_key = config.get("OPENAI_API_KEY", "default_key")
+api_model_name = config.get("model_name", "default_model")
+api_key = config.get("openai_api_key", "default_key")
 
 api_manager = ApiManager(api_model_name, api_key)
 cli_view = CliView()
@@ -39,19 +39,35 @@ def start():
     except KeyboardInterrupt:
         ai_controller.save_history()
 
-        
+
 @cli.command()
 def set_apikey():
     """Set the API key."""
     new_api_key = click.prompt("Please enter your new API key")
-    config.set("OPENAI_API_KEY", new_api_key)
+    config.set("openai_api_key", new_api_key)
     click.echo("API key set successfully.")
 
+
 @cli.command()
-def set_model():
+def select_model():
     """Set the model name."""
-    new_model_name = click.prompt("Please enter the new model name")
-    config.set("MODEL_NAME", new_model_name)
+    # Display the models and their corresponding index
+    selected_model = ""
+    while selected_model == "":
+        click.echo("Available models:")
+        available_models = config.available_models()
+        for index, model_name in enumerate(available_models):
+            click.echo(f"{index + 1}. {model_name}")
+        selected_index = click.prompt("Please select the new model", type=int)
+
+        # Validate the index
+        if 0 < selected_index <= len(available_models):
+            selected_model = available_models[selected_index - 1]
+            click.echo(f"You have selected: {selected_model}")
+        else:
+            click.echo("Invalid selection. Please try again.")
+
+    config.set("model_name", selected_model)
     click.echo("Model name set successfully.")
 
 
