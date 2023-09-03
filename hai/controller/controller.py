@@ -5,9 +5,9 @@ import re
 
 from hai.model.api_manager import ApiManager
 from hai.view.cli_view import CliView
-from hai.model.History import History
-from hai.model.UserMessage import UserMessage
-from hai.model.AIMessage import AIMessage
+from hai.model.history import History
+from hai.model.user_message import UserMessage
+from hai.model.ai_message import AIMessage
 
 
 class Controller:
@@ -27,9 +27,8 @@ class Controller:
         """
         Starts the conversation loop. The loop can be exited by typing "quit".
         """
-        user_input = ""
-        INT_POSITIVE_REGEX = r"^[1-9]\d*$"
 
+        user_input = ""
         # conversation loop
         while True:
             user_input = self.cli_view.get_user_input()
@@ -64,3 +63,10 @@ class Controller:
 
             (message, code_strings) = self.ask_question(user_input)
             self.history.add(AIMessage(message, code_strings))
+
+    def save_history(self):
+        with open("./history.json", "+w") as file:
+            file.write(self.history.to_JSON())
+
+    def get_history(self):
+        return self.history.to_JSON()
