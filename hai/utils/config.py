@@ -16,7 +16,7 @@ class Config:
 
     def save_config(self):
         with open(self.file_path, "w") as f:
-            json.dump(self.config_data, f)
+            json.dump(self.config_data, f, indent=4)
 
     def get(self, key: str, default: Any = None) -> Any:
         return self.config_data.get(key, default)

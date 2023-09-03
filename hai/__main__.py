@@ -39,6 +39,21 @@ def start():
     except KeyboardInterrupt:
         ai_controller.save_history()
 
+        
+@cli.command()
+def set_apikey():
+    """Set the API key."""
+    new_api_key = click.prompt("Please enter your new API key")
+    config.set("OPENAI_API_KEY", new_api_key)
+    click.echo("API key set successfully.")
+
+@cli.command()
+def set_model():
+    """Set the model name."""
+    new_model_name = click.prompt("Please enter the new model name")
+    config.set("MODEL_NAME", new_model_name)
+    click.echo("Model name set successfully.")
+
 
 if __name__ == "__main__":
     cli()
