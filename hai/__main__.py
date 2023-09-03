@@ -10,12 +10,14 @@ import click
 from hai.model.api_manager import ApiManager
 from hai.view.cli_view import CliView
 from hai.controller.controller import Controller
+from hai.utils.config import Config
 
-dotenv_path = Path(".env")
-load_dotenv(dotenv_path=dotenv_path)
+# Initialize Config
+config = Config(file_path="hai_config.json")
 
-api_model_name = os.getenv("MODEL_NAME")
-api_key = os.getenv("OPENAI_API_KEY")
+# Use Config to initialize API Manager and Controller
+api_model_name = config.get("MODEL_NAME", "default_model")
+api_key = config.get("OPENAI_API_KEY", "default_key")
 
 api_manager = ApiManager(api_model_name, api_key)
 cli_view = CliView()

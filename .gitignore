@@ -6,3 +6,5 @@ dist/
 hai.egg-info/
 build/
 *egg-info
+hai_config.json
+history.json
