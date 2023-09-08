@@ -55,7 +55,7 @@ def test_copy_provided_command_to_clipboard(
 
     gen = user_input_generator()
     monkeypatch.setattr(CliView, "get_user_input", lambda self: next(gen))
-    app.ask_question()
+    app.ask_ai()
     out, err = capfd.readouterr()
     assert (
         "To print the sizes of all files in the terminal" in out

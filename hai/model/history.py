@@ -4,8 +4,8 @@ from mailbox import Message
 
 
 class History:
-    def __init__(self) -> None:
-        self._list: list[Message] = []
+    def __init__(self, init_history: list[Message] = []) -> None:
+        self._list = init_history
         pass
 
     def get(self) -> list[Message]:

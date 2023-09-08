@@ -16,14 +16,30 @@ class Controller:
         self.api_manager = api_manager
         self.cli_view = cli_view
         self.response_message = ""
-        self.history = History()
+        self.history = History(
+            [
+                Message(
+                    role="system",
+                    content="""Your role is to serve as a highly capable, technical assistant. The queries posed to you will predominantly be technical in nature, requiring clear, accurate, and precise responses. As you will be fielding a substantial number of questions related to Linux OS and command line tools, it is essential that you provide responses steeped in technical expertise.
+             
+                Please ensure that all commands, codes, and technical instructions are presented within markdown code blocks to enhance readability and ease of understanding. Strive to deliver responses that are thorough, yet succinct, and always strive for the utmost accuracy in the information you provide.
+
+                You are an integral part of a command line interface tool; as such, it is important to remember that your responses will be viewed within a command line environment. It is essential to maintain high standards of clarity and conciseness, ensuring that your output seamlessly integrates into this context.
+
+                Your mission is to provide the best possible assistance in answering questions and solving problems, while maintaining a focus on delivering high-quality, practical, and user-friendly outputs. You are expected to carry out this mission with diligence, accuracy, and the highest level of professional expertise.
+                
+                Provide very little description. Keep responses very short and to the point.
+                """,
+                )
+            ]
+        )
         self.price_listener = PriceChatListener()
         self.code_strings_from_prev_request = (
             []
         )  # !TODO: Refactor this, controller should keep track of code strings. Recalculate code strings each time
 
-    def ask_question(self, user_input) -> tuple[str, list[str]]:
-        response = self.api_manager.get_ai_response(user_input)
+    def ask_ai(self, conversation: list[Message]) -> tuple[str, list[str]]:
+        response = self.api_manager.get_ai_response(conversation)
         return self.cli_view.update_from_generator(response)
 
     def start_conversation(self):
@@ -48,12 +64,12 @@ class Controller:
             if user_input.lower() == "quit":
                 break
 
-            (message, code_strings) = self.ask_question(user_input)
+            (message, code_strings) = self.ask_ai(self.history.get())
             self.code_strings_from_prev_request = code_strings  # !TODO: Refactor this, controller should keep track of code strings
             self.price_listener.on_chat_response(
                 messages=[Message(content=user_input, role="user")],
                 response=Message(content=message, role="assistant"),
-                model="gpt-3.5-turbo",  # !TODO change to the real model name from config file
+                model="gpt-4",  # !TODO change to the real model name from config file
             )
             self.history.add(Message(content=message, role="assistant"))
 
