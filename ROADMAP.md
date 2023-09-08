@@ -33,7 +33,7 @@
 
 6. **API & Model Configuration**
 
-   - Allow setting of API key through the tool ✅
+   - Allow setting of API key through the tool's interface ✅
    - Add CLI help option ✅
    - Add `--model` option with auto-completion or interactive display ✅
    - Extend configuration

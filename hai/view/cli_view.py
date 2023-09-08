@@ -10,7 +10,7 @@ class CliView:
 
     @staticmethod
     def get_user_input():
-        first_line = click.prompt("User >", default="", show_default=False)
+        first_line = click.prompt("Prompt >", default="", show_default=False)
         lines = [first_line]
         while True:
             line = input()
