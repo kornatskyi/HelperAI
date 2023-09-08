@@ -24,13 +24,13 @@ def app():
 def test_ask_the_question_on_mock_data(monkeypatch, capfd, app: Controller):
     """
     Test if the 'ask_question' method of the Controller returns the correct response.
-    We are mocking the user's question and then verifying if the controller's output 
+    We are mocking the user's question and then verifying if the controller's output
     contains the expected text based on the mock data.
     """
     monkeypatch.setattr(
         CliView, "get_user_input", lambda self: "Mocked question?"
     )
-    app.ask_question()
+    app.start_conversation()
     out, err = capfd.readouterr()
     assert (
         "To print the sizes of all files in the terminal" in out
@@ -38,13 +38,17 @@ def test_ask_the_question_on_mock_data(monkeypatch, capfd, app: Controller):
         in out
     )
 
-def test_copy_provided_command_to_clipboard(monkeypatch, capfd, app: Controller):
+
+def test_copy_provided_command_to_clipboard(
+    monkeypatch, capfd, app: Controller
+):
     """
     Test if the 'ask_question' method of the Controller correctly copies the provided
     command to the clipboard.
     We are mocking the user's question and their selection of the command to copy, and then
     checking if the correct command has been copied to the clipboard.
     """
+
     def user_input_generator():
         yield "Mocked question?"
         yield "1"
@@ -60,4 +64,3 @@ def test_copy_provided_command_to_clipboard(monkeypatch, capfd, app: Controller)
     )
     pasted = pc.paste()
     assert "du -ah" in pasted
-
