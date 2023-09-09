@@ -2,10 +2,13 @@ import copy
 import json
 from mailbox import Message
 
+from hai.utils.config import Config
+
 
 class History:
     def __init__(self, init_history: list[Message] = []) -> None:
         self._list = init_history
+        self._history_path = Config()
         pass
 
     def get(self) -> list[Message]:
@@ -32,3 +35,8 @@ class History:
             for message in self._list
         ]
         return json.dumps(new_list, indent=2)
+
+    def persist(self):
+        """Save conversation history to file."""
+        with open(self._history_path, "w") as file:
+            file.write(self.to_JSON())

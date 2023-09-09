@@ -1,10 +1,25 @@
 import json
 from typing import Any, Dict
 
+DEFAULT_CONFIG_PATH = "./hai_config.json"
+
 
 class Config:
-    def __init__(self, file_path: str):
-        self.file_path = file_path
+    _instance = None  # Singleton instance
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(Config, cls).__new__(cls)
+            # Here, we particularly store the arguments and kwargs of the first call
+            cls._file_path_args = args
+            cls._file_path_kwargs = kwargs
+        return cls._instance
+
+    def __init__(self, file_path: str = ""):
+        # Only initialize if we haven't before
+        if hasattr(self, "initialized") and self.initialized:
+            return
+        self.file_path = DEFAULT_CONFIG_PATH
         self.config_data: Dict[str, Any] = self.load_config()
 
     def load_config(self) -> Dict[str, Any]:

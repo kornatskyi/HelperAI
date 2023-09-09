@@ -13,7 +13,7 @@ from hai.controller.controller import Controller
 from hai.utils.config import Config
 
 # Initialize Config
-config = Config(file_path="hai_config.json")
+config = Config()
 
 # Use Config to initialize API Manager and Controller
 api_model_name = config.get("model_name", "default_model")
@@ -34,10 +34,7 @@ def cli(ctx):
 @cli.command()
 def start():
     """Starts the HAI conversation."""
-    try:
-        ai_controller.start_conversation()
-    except KeyboardInterrupt:
-        ai_controller.save_history()
+    ai_controller.initiate_conversation()
 
 
 @cli.command()
