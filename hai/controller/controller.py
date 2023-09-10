@@ -29,7 +29,7 @@ class Controller:
     ) -> Tuple[str, List[str]]:
         """Get a response from the AI."""
         response = self.api_manager.get_ai_response(conversation)
-        return self.cli_view.update_from_generator(response)
+        return self.cli_view.display_live_updates_from_generator(response)
 
     def initiate_conversation(self):
         """Initiate and manage the conversation loop."""

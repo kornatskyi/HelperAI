@@ -30,6 +30,7 @@
      - Start new conversation
      - Get back to the latest conversation
      - Conversation history to Markdown
+   - Promts colors for user and Assistant
 
 6. **API & Model Configuration**
 
@@ -71,3 +72,4 @@
 - How much money it cost to get a reponse?
 
 12. **Add logging**
+  
