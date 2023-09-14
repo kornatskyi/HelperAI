@@ -3,10 +3,17 @@ import click
 from rich.markdown import Markdown
 from rich.console import Console
 from rich.live import Live
+from rich.style import Style
 
 
 class CliView:
     COPY_INDICATOR = "(press {index} to copy)"
+    STYLES = {
+        "title": Style(color="bright_yellow", bold=True, underline=True),
+        "success": Style(color="green"),
+        "error": Style(color="bright_red"),
+        "info": Style(color="sky_blue3"),
+    }
 
     def __init__(self):
         self.console = Console()
@@ -79,3 +86,8 @@ class CliView:
                     index=len(strings_to_copy)
                 )
         return strings_to_copy
+
+    def print_info(self, message: str):
+        self.console.print(message, style=self.STYLES["info"])
+
+    # self.console.print(, )

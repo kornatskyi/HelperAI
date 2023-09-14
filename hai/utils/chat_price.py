@@ -2,11 +2,13 @@ from typing import Optional, TypedDict
 import tiktoken
 
 from hai.model.message import Message
+from hai.view.cli_view import CliView
 
 
 class PriceChatListener:
-    def __init__(self):
+    def __init__(self, view: CliView):
         self.current_spend = 0
+        self._view = view
 
     def on_chat_response(
         self, messages: list[Message], response: Message, model: str
@@ -16,10 +18,10 @@ class PriceChatListener:
         )
         price = price_for_completion(messages, response, model)
         self.current_spend += price
-        print(
+        self._view.print_info(
             f"Number of tokens in the last response + request: {int(num_tokens)}"
         )
-        print(f"Current spend: ${self.current_spend:.3}")
+        self._view.print_info(f"Current spend: ${self.current_spend:.3}")
 
 
 GPT_3_5_TURBO_PRICE_PER_TOKEN = {

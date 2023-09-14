@@ -17,7 +17,7 @@ class Controller:
         self.api_manager = api_manager
         self.cli_view = cli_view
         self.history = History()
-        self.price_listener = PriceChatListener()
+        self.price_listener = PriceChatListener(view=cli_view)
         self.code_strings_from_prev_request = []
 
     @property
