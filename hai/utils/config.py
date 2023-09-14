@@ -19,7 +19,7 @@ class Config:
         # Only initialize if we haven't before
         if hasattr(self, "initialized") and self.initialized:
             return
-        self.file_path = DEFAULT_CONFIG_PATH
+        self.file_path = DEFAULT_CONFIG_PATH if not file_path else file_path
         self.config_data: Dict[str, Any] = self.load_config()
 
     def load_config(self) -> Dict[str, Any]:

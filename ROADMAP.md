@@ -38,7 +38,7 @@
    - Add CLI help option ✅
    - Add `--model` option with auto-completion or interactive display ✅
    - Extend configuration
-     - stup systsem promts
+     - setup systems promts
      - model configs such as temperature and so on
 
 7. **Input Methods**
@@ -50,7 +50,7 @@
 
 8. **Conversation History**
 
-   - send whole conversattion history each time
+   - send whole conversation history each time ✅
    - Save history to a JSON file ✅
    - Implement fuzzy search over history
    - Decide on best storage model for history (e.g., flat file, database)
@@ -72,4 +72,3 @@
 - How much money it cost to get a reponse?
 
 12. **Add logging**
-  

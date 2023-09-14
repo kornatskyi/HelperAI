@@ -1,15 +1,23 @@
 import copy
+from datetime import datetime
 import json
-from mailbox import Message
+import os
+from typing import Union
+from pathlib import Path
+import uuid
 
-from hai.utils.config import Config
+from hai.model.message import Message
 
 
-class History:
-    def __init__(self, init_history: list[Message] = []) -> None:
-        self._list = init_history
-        self._history_path = Config()
-        pass
+class Conversation:
+    def __init__(
+        self, name: str = "Default_name", init_conversation: list[Message] = []
+    ) -> None:
+        self._list = init_conversation
+        self._name = name
+        self._id = uuid.uuid1()
+        self.unique_name = self._name[:100] + "_" + str(self._id)
+        self.creation_time = datetime.now()
 
     def get(self) -> list[Message]:
         return copy.deepcopy(self._list)
@@ -28,15 +36,37 @@ class History:
                 return entry
 
     def to_JSON(self) -> str:
-        new_list = [
-            {"user": message.__dict__()}
-            if type(message) is Message
-            else {"ai": message.__dict__()}
-            for message in self._list
-        ]
-        return json.dumps(new_list, indent=2)
+        conversation_to_save = {
+            "id": str(self._id),
+            "name": self._name,
+            "creation_time": str(self.creation_time),
+            "messages": self._list,
+        }
+        return json.dumps(conversation_to_save, indent=2)
 
-    def persist(self):
+
+class History:
+    def __init__(
+        self,
+        initialization_path: Union[str, Path] = Path.home(),
+    ) -> None:
+        self._initialization_path = initialization_path
+
+        # create history folder
+        directory_name = "HelperAI_history"
+        self.history_dir_path = Path.joinpath(
+            initialization_path, directory_name
+        )
+        if not os.path.exists(self.history_dir_path):
+            os.makedirs(directory_name)
+            print(f"{directory_name} directory was created")
+        else:
+            print(f"{directory_name} already exists!")
+
+    def persist(self, conversation: Conversation):
         """Save conversation history to file."""
-        with open(self._history_path, "w") as file:
-            file.write(self.to_JSON())
+        with open(
+            self.history_dir_path.joinpath(conversation.unique_name + ".json"),
+            "w",
+        ) as file:
+            file.write(conversation.to_JSON())

@@ -6,23 +6,26 @@ import pyperclip as pc
 from hai.model.api_manager import ApiManager
 from hai.utils.chat_price import Message, PriceChatListener
 from hai.view.cli_view import CliView
-from hai.model.history import History
+from hai.model.history import Conversation, History
 
 # Constants
 INT_POSITIVE_REGEX = re.compile(r"^[1-9]\d*$")
 
 
 class Controller:
-    def __init__(self, api_manager: ApiManager, cli_view: CliView):
+    def __init__(
+        self, api_manager: ApiManager, cli_view: CliView, history: History
+    ):
         self.api_manager = api_manager
         self.cli_view = cli_view
-        self.history = History()
+        self.history = history
         self.price_listener = PriceChatListener(view=cli_view)
         self.code_strings_from_prev_request = []
+        self.current_conversation = None
 
     @property
     def last_ai_message(self) -> Message:
-        return self.history.get_last_ai_message()
+        return self.current_conversation.get_last_ai_message()
 
     def get_response_from_ai(
         self, conversation: List[Message]
@@ -33,10 +36,12 @@ class Controller:
 
     def initiate_conversation(self):
         """Initiate and manage the conversation loop."""
-
+        self.current_conversation = Conversation()
         while True:
             user_input = self.cli_view.get_user_input()
-            self.history.add(Message(content=user_input, role="user"))
+            self.current_conversation.add(
+                Message(content=user_input, role="user")
+            )
 
             if self._is_valid_code_block_number(user_input):
                 self.copy_codeblock_to_clipboard(user_input)
@@ -45,8 +50,12 @@ class Controller:
             if user_input.lower() == "quit":
                 break
 
+            if user_input[:5] == ":save":
+                self.history.persist(self.current_conversation)
+                continue
+
             message, code_strings = self.get_response_from_ai(
-                self.history.get()
+                self.current_conversation.get()
             )
             self.code_strings_from_prev_request = code_strings
             self.price_listener.on_chat_response(
@@ -54,7 +63,9 @@ class Controller:
                 response=Message(content=message, role="assistant"),
                 model=self.api_manager.model_name,
             )
-            self.history.add(Message(content=message, role="assistant"))
+            self.current_conversation.add(
+                Message(content=message, role="assistant")
+            )
 
     def _is_valid_code_block_number(self, user_input: str) -> bool:
         return bool(re.fullmatch(INT_POSITIVE_REGEX, user_input))

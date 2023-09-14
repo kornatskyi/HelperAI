@@ -8,6 +8,7 @@ import click
 
 # internal
 from hai.model.api_manager import ApiManager
+from hai.model.history import History
 from hai.view.cli_view import CliView
 from hai.controller.controller import Controller
 from hai.utils.config import Config
@@ -19,9 +20,12 @@ config = Config()
 api_model_name = config.get("model_name", "default_model")
 api_key = config.get("openai_api_key", "default_key")
 
+history = History(
+    initialization_path=Path.home().joinpath("./Projects/HelperAI")
+)
 api_manager = ApiManager(api_model_name, api_key)
 cli_view = CliView()
-ai_controller = Controller(api_manager, cli_view)
+ai_controller = Controller(api_manager, cli_view, history)
 
 
 @click.group(invoke_without_command=True)
