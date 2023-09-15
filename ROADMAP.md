@@ -58,9 +58,13 @@
 
 9. **User Experience (UX) Improvements**
 
-   - Implement a `--verbose` flag for detailed output
    - Support command auto-completion
-   - Add color-coded output for better readability
+     - Commands:
+       - :save - saves history
+       - :new - start new conversation
+       - :info - prints config info
+       - :delete last prompt
+       - :help
 
 10. **Interrupt Functionality**
 
@@ -72,3 +76,5 @@
 - How much money it cost to get a reponse?
 
 12. **Add logging**
+
+13. **Add speech to text and text to speech support**

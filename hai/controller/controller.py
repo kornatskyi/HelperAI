@@ -13,6 +13,14 @@ INT_POSITIVE_REGEX = re.compile(r"^[1-9]\d*$")
 
 
 class Controller:
+    COMMANDS = {
+        ":save": "save_history",
+        ":new": "new_conversation",
+        ":info": "display_info",
+        ":delete": "delete_last_prompt",
+        ":help": "display_help",
+    }
+
     def __init__(
         self, api_manager: ApiManager, cli_view: CliView, history: History
     ):
@@ -50,8 +58,10 @@ class Controller:
             if user_input.lower() == "quit":
                 break
 
-            if user_input[:5] == ":save":
-                self.history.persist(self.current_conversation)
+            if user_input in self.COMMANDS:
+                method_name = self.COMMANDS[user_input]
+                method_to_call = getattr(self, method_name)
+                method_to_call()
                 continue
 
             message, code_strings = self.get_response_from_ai(
@@ -90,3 +100,28 @@ class Controller:
             self.cli_view.show_output(
                 f"An error occurred when copying code block: {e}"
             )
+
+    def save_history(self):
+        self.history.persist(self.current_conversation)
+
+    def new_conversation(self):
+        self.current_conversation = Conversation()
+
+    def display_info(self):
+        # Modify according to your config structure.
+        # For demonstration, just printing a simple message.
+        self.cli_view.show_output("Displaying configuration information.")
+
+    def delete_last_prompt(self):
+        # Here, you can implement the logic to remove the last user prompt.
+        self.current_conversation.delete_last_message()  # Assumes such a method exists in Conversation.
+
+    def display_help(self):
+        help_message = """
+        :save - saves history
+        :new - start new conversation
+        :info - prints config info
+        :delete - deletes the last prompt
+        :help - prints this help message
+        """
+        self.cli_view.show_output(help_message)

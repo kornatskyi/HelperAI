@@ -5,3 +5,6 @@
 `xclip`
 
 run `sudo apt-get install xclip` to install
+
+## How to install?
+

@@ -31,7 +31,7 @@ class CliView:
 
     def show_output(self, message) -> list[str]:
         markdown = Markdown(message)
-        strings_to_copy = self._modify_md(markdown)
+        strings_to_copy = self._append_copy_marks_to_markdown(markdown)
         self.console.print(markdown)
         return strings_to_copy
 
