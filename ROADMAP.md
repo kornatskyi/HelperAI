@@ -26,11 +26,11 @@
    - Enable continuation of conversations ✅
    - Utilize numerical inputs for quick actions like copying to clipboard ✅
    - Implement special symbols (e.g., `/`, `@`) for calling commands
-     - Switch btween conversations
+     - Switch between conversations
      - Start new conversation
      - Get back to the latest conversation
      - Conversation history to Markdown
-   - Promts colors for user and Assistant
+   - Prompts colors for user and Assistant
 
 6. **API & Model Configuration**
 
@@ -70,10 +70,12 @@
 
     - Allow interruption of output
 
-11. **Tokens managment**
+11. **Tokens management**
 
-- How many tokens is used?
-- How much money it cost to get a reponse?
+- Price counter and tokens counter
+  - conversation price
+  - tokens in a conversation
+- show what's the short memory size of a model, and how full it is
 
 12. **Add logging**
 
